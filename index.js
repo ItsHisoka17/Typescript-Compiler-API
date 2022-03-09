@@ -31,7 +31,21 @@ app.use("/compiler/:type", function(req, res){
 })
 
 app.post('/eval', function(req, res){
-  
+  let data = req.body.c;
+  if (data){
+    if ("string"===typeof data){
+      let evaled;
+      try{
+        evaled = eval(data);
+      } catch (e) {
+        evaled = e;
+      }
+      res.json({evaled})
+    } else {
+      res.status(400).json({error: constants["ERR_M_INV_C"]});
+    } 
+  } else {
+      res.status(400).json({error: constants["ERR_NULL_C"]});
+    }
 })
-
 app.listen(3000, () => console.log('SERVER RUNNING ON PORT 3000'));
