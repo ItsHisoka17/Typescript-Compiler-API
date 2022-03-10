@@ -30,7 +30,7 @@ app.use("/compiler/:type", function(req, res){
   }
 })
 
-app.post('/eval', function(req, res){
+app.post('/compiler/eval', function(req, res){
   let data = req.body.c;
   if (data){
     if ("string"===typeof data){
