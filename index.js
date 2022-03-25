@@ -6,28 +6,22 @@ const constants = require('./utils/constants.js');
 
 app.use(bodyParser.json());
 
-app.use("/compiler/:type", function(req, res){
-  if (req.params.type&&req.params.type==="typescript"){
+app.get('/', (req,res) => {res.send('WELCOME')});
+app.post("/compiler/typescript", function(req, res){
     let c = req.body["typescript"] || req.body["code"];
       if (c){
         if (!("string"===typeof c)){
-          res.status(400).json({message:constants["ERR_M_INV_C"]});
+          res.status(400).send({message:constants["ERR_M_INV_C"]});
           return;
         };
         let compiled = compile(c);
-        res.status(200).json({
+        res.status(200).send({
           code: compiled
         });
         return true;
-      } else {        res.status(400).json({message:constants["ERR_NULL_C"]});
+      } else {        res.status(400).send({message:constants["ERR_NULL_C"]});
           return;
       }
-  } else {
-    res.status(404).json({
-      message: constants[P_N_F]
-    });
-    return;
-  }
 })
 
 app.post('/compiler/eval', function(req, res){
@@ -40,12 +34,12 @@ app.post('/compiler/eval', function(req, res){
       } catch (e) {
         evaled = e;
       }
-      res.json({evaled})
+      res.send({evaled})
     } else {
-      res.status(400).json({error: constants["ERR_M_INV_C"]});
+      res.status(400).send({error: constants["ERR_M_INV_C"]});
     } 
-  } else {
-      res.status(400).json({error: constants["ERR_NULL_C"]});
-    }
+  }/* else {
+      res.status(400).send({error: constants["ERR_NULL_C"]});
+    }*/
 })
 app.listen(3000, () => console.log('SERVER RUNNING ON PORT 3000'));
